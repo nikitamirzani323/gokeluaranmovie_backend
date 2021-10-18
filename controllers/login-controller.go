@@ -1,13 +1,15 @@
 package controllers
 
 import (
+	"log"
 	"strconv"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
-	"github.com/nikitamirzani323/gosveltemdb/entities"
-	"github.com/nikitamirzani323/gosveltemdb/helpers"
-	"github.com/nikitamirzani323/gosveltemdb/models"
+	"github.com/golang-jwt/jwt/v4"
+	"github.com/nikitamirzani323/gokeluaranmovie_backend/entities"
+	"github.com/nikitamirzani323/gokeluaranmovie_backend/helpers"
+	"github.com/nikitamirzani323/gokeluaranmovie_backend/models"
 )
 
 func CheckLogin(c *fiber.Ctx) error {
@@ -71,4 +73,29 @@ func CheckLogin(c *fiber.Ctx) error {
 		})
 
 	}
+}
+func Home(c *fiber.Ctx) error {
+	client := new(entities.Home)
+	if err := c.BodyParser(client); err != nil {
+		c.Status(fiber.StatusBadRequest)
+		return c.JSON(fiber.Map{
+			"status":  fiber.StatusBadRequest,
+			"message": err.Error(),
+			"record":  nil,
+		})
+	}
+
+	user := c.Locals("jwt").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	name := claims["name"].(string)
+	temp_decp := helpers.Decryption(name)
+
+	log.Println(temp_decp)
+
+	c.Status(fiber.StatusOK)
+	return c.JSON(fiber.Map{
+		"status":  fiber.StatusOK,
+		"message": "Success",
+		"record":  nil,
+	})
 }

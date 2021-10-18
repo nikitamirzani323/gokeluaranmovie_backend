@@ -6,24 +6,24 @@ import (
 
 	"github.com/buger/jsonparser"
 	"github.com/gofiber/fiber/v2"
-	"github.com/nikitamirzani323/gosveltemdb/helpers"
-	"github.com/nikitamirzani323/gosveltemdb/models"
+	"github.com/nikitamirzani323/gokeluaranmovie_backend/entities"
+	"github.com/nikitamirzani323/gokeluaranmovie_backend/helpers"
+	"github.com/nikitamirzani323/gokeluaranmovie_backend/models"
 )
 
 func Adminhome(c *fiber.Ctx) error {
-	field_redis := "LISTADMIN_AGENT"
+	field_redis := "LISTADMIN_BACKEND"
 
-	var obj entities.responseredis_adminhome
-	var arraobj []entities.responseredis_adminhome
-	var obj_listruleadmin entities.responseredis_adminhome_listruleadmin
-	var arraobj_listruleadmin []entities.responseredis_adminhome_listruleadmin
+	var obj entities.Responseredis_adminhome
+	var arraobj []entities.Responseredis_adminhome
+	var obj_listruleadmin entities.Responseredis_adminrule
+	var arraobj_listruleadmin []entities.Responseredis_adminrule
 	render_page := time.Now()
 	resultredis, flag := helpers.GetRedis(field_redis)
 	jsonredis := []byte(resultredis)
 	record_RD, _, _, _ := jsonparser.Get(jsonredis, "record")
 	listruleadmin_RD, _, _, _ := jsonparser.Get(jsonredis, "listruleadmin")
 	jsonparser.ArrayEach(record_RD, func(value []byte, dataType jsonparser.ValueType, offset int, err error) {
-		admin_no, _ := jsonparser.GetInt(value, "admin_no")
 		admin_username, _ := jsonparser.GetString(value, "admin_username")
 		admin_nama, _ := jsonparser.GetString(value, "admin_nama")
 		admin_rule, _ := jsonparser.GetString(value, "admin_rule")
@@ -33,7 +33,6 @@ func Adminhome(c *fiber.Ctx) error {
 		admin_lastipaddres, _ := jsonparser.GetString(value, "admin_lastipaddres")
 		admin_status, _ := jsonparser.GetString(value, "admin_status")
 
-		obj.Admin_no = int(admin_no)
 		obj.Admin_username = admin_username
 		obj.Admin_nama = admin_nama
 		obj.Admin_rule = admin_rule
@@ -45,11 +44,9 @@ func Adminhome(c *fiber.Ctx) error {
 		arraobj = append(arraobj, obj)
 	})
 	jsonparser.ArrayEach(listruleadmin_RD, func(value []byte, dataType jsonparser.ValueType, offset int, err error) {
-		adminrule_idruleadmin, _ := jsonparser.GetInt(value, "adminrule_idruleadmin")
 		adminrule_name, _ := jsonparser.GetString(value, "adminrule_name")
 
-		obj_listruleadmin.Adminrule_idruleadmin = int(adminrule_idruleadmin)
-		obj_listruleadmin.Adminrule_name = adminrule_name
+		obj_listruleadmin.Adminrule_idrule = adminrule_name
 		arraobj_listruleadmin = append(arraobj_listruleadmin, obj_listruleadmin)
 	})
 	if !flag {

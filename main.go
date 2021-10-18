@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 
-	"github.com/nikitamirzani323/gosveltemdb/db"
-	"github.com/nikitamirzani323/gosveltemdb/routers"
+	"github.com/nikitamirzani323/gokeluaranmovie_backend/db"
+	"github.com/nikitamirzani323/gokeluaranmovie_backend/routers"
 )
 
 func main() {

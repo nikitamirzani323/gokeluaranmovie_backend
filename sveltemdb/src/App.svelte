@@ -3,6 +3,7 @@
 	import { wrap } from "svelte-spa-router/wrap";
 	import Navbar from "./components/Navbar.svelte";
 	import Company from "./pages/company/Company.svelte";
+	import Admin from "./pages/admin/Admin.svelte";
 	import Login from "./pages/Login.svelte";
 	import NotFound from "./pages/Notfound.svelte";
 	let token = localStorage.getItem("token");
@@ -20,6 +21,9 @@
 		routes = {
 			"/": wrap({
 				component: Company,
+			}),
+			"/admin": wrap({
+				component: Admin,
 			}),
 			"*": NotFound,
 		};

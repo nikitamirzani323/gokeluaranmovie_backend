@@ -9,7 +9,7 @@ import (
 	s "strings"
 	"time"
 
-	"github.com/nikitamirzani323/gosveltemdb/configs"
+	"github.com/nikitamirzani323/gokeluaranmovie_backend/configs"
 	"golang.org/x/crypto/bcrypt"
 )
 

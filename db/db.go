@@ -7,7 +7,7 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
-	"github.com/nikitamirzani323/gosveltemdb/helpers"
+	"github.com/nikitamirzani323/gokeluaranmovie_backend/helpers"
 )
 
 var db *sql.DB

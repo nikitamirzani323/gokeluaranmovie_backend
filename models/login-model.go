@@ -6,9 +6,9 @@ import (
 	"errors"
 	"log"
 
-	"github.com/nikitamirzani323/gosveltemdb/configs"
-	"github.com/nikitamirzani323/gosveltemdb/db"
-	"github.com/nikitamirzani323/gosveltemdb/helpers"
+	"github.com/nikitamirzani323/gokeluaranmovie_backend/configs"
+	"github.com/nikitamirzani323/gokeluaranmovie_backend/db"
+	"github.com/nikitamirzani323/gokeluaranmovie_backend/helpers"
 	"github.com/nleeper/goment"
 )
 
@@ -17,18 +17,18 @@ func Login_Model(username, password, ipaddress, timezone string) (bool, int, err
 	ctx := context.Background()
 	flag := false
 	tglnow, _ := goment.New()
-	var passwordDB, idadminlevelDB string
+	var passwordDB, idadminDB string
 	var idruleadminDB int
 	sql_select := `
 			SELECT
-			password, idadminlevel   
+			password, idadmin    
 			FROM ` + configs.DB_tbl_admin + ` 
 			WHERE username  = ?
 			AND statuslogin = "Y" 
 		`
 
 	row := con.QueryRowContext(ctx, sql_select, username)
-	switch e := row.Scan(&passwordDB, &idadminlevelDB); e {
+	switch e := row.Scan(&passwordDB, &idadminDB); e {
 	case sql.ErrNoRows:
 		return false, 0, errors.New("Username and Password Not Found")
 	case nil:

@@ -5,10 +5,10 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/nikitamirzani323/gosveltemdb/configs"
-	"github.com/nikitamirzani323/gosveltemdb/db"
-	"github.com/nikitamirzani323/gosveltemdb/entities"
-	"github.com/nikitamirzani323/gosveltemdb/helpers"
+	"github.com/nikitamirzani323/gokeluaranmovie_backend/configs"
+	"github.com/nikitamirzani323/gokeluaranmovie_backend/db"
+	"github.com/nikitamirzani323/gokeluaranmovie_backend/entities"
+	"github.com/nikitamirzani323/gokeluaranmovie_backend/helpers"
 )
 
 func Fetch_adminHome() (helpers.ResponseAdmin, error) {
@@ -21,7 +21,7 @@ func Fetch_adminHome() (helpers.ResponseAdmin, error) {
 	start := time.Now()
 
 	sql_select := `SELECT 
-			username , name, idadminlevel,
+			username , name, idadmin,
 			statuslogin, lastlogin, joindate, 
 			ipaddress, timezone  
 			FROM ` + configs.DB_tbl_admin + ` 
@@ -35,8 +35,7 @@ func Fetch_adminHome() (helpers.ResponseAdmin, error) {
 	for row.Next() {
 		no += 1
 		var (
-			idadminlevel_db                                                      int
-			username_db, name_db                                                 string
+			username_db, name_db, idadminlevel_db                                string
 			statuslogin_db, lastlogin_db, joindate_db, ipaddress_db, timezone_db string
 		)
 
@@ -46,10 +45,12 @@ func Fetch_adminHome() (helpers.ResponseAdmin, error) {
 			&ipaddress_db, &timezone_db)
 
 		helpers.ErrorCheck(err)
-
+		if statuslogin_db == "Y" {
+			statuslogin_db = "ACTIVE"
+		}
 		obj.Username = username_db
 		obj.Nama = name_db
-		obj.Rule = Get_AdminRule("ruleadmingroup", idadminlevel_db)
+		obj.Rule = idadminlevel_db
 		obj.Joindate = joindate_db
 		obj.Timezone = timezone_db
 		obj.Lastlogin = lastlogin_db

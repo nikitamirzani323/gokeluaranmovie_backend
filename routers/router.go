@@ -6,7 +6,8 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/monitor"
 	"github.com/gofiber/fiber/v2/middleware/recover"
-	"github.com/nikitamirzani323/gosveltemdb/controllers"
+	"github.com/nikitamirzani323/gokeluaranmovie_backend/controllers"
+	"github.com/nikitamirzani323/gokeluaranmovie_backend/middleware"
 )
 
 func Init() *fiber.App {
@@ -22,6 +23,8 @@ func Init() *fiber.App {
 	app.Get("/dashboard", monitor.New())
 
 	app.Post("/api/login", controllers.CheckLogin)
+	app.Post("/api/valid", middleware.JWTProtected(), controllers.Home)
+	app.Post("/api/alladmin", middleware.JWTProtected(), controllers.Adminhome)
 
 	return app
 }

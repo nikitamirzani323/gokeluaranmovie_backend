@@ -14,8 +14,7 @@ type Model_adminrule struct {
 	Idrule string `json:"adminrule_idruleadmin"`
 }
 
-type responseredis_adminhome struct {
-	Admin_no           int    `json:"admin_no"`
+type Responseredis_adminhome struct {
 	Admin_username     string `json:"admin_username"`
 	Admin_nama         string `json:"admin_nama"`
 	Admin_rule         string `json:"admin_rule"`
@@ -25,6 +24,6 @@ type responseredis_adminhome struct {
 	Admin_lastipaddres string `json:"admin_lastipaddres"`
 	Admin_status       string `json:"admin_status"`
 }
-type responseredis_adminrule struct {
+type Responseredis_adminrule struct {
 	Adminrule_idrule string `json:"adminrule_idruleadmin"`
 }

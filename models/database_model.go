@@ -6,9 +6,9 @@ import (
 	"log"
 	"strings"
 
-	"github.com/nikitamirzani323/gosveltemdb/configs"
-	"github.com/nikitamirzani323/gosveltemdb/db"
-	"github.com/nikitamirzani323/gosveltemdb/helpers"
+	"github.com/nikitamirzani323/gokeluaranmovie_backend/configs"
+	"github.com/nikitamirzani323/gokeluaranmovie_backend/db"
+	"github.com/nikitamirzani323/gokeluaranmovie_backend/helpers"
 )
 
 func Get_counter(field_column string) int {
@@ -110,7 +110,7 @@ func CheckDBTwoField(table, field_1, value_1, field_2, value_2 string) bool {
 	}
 	return flag
 }
-func Get_AdminRule(tipe string, idadmin int) string {
+func Get_AdminRule(tipe, idadmin string) string {
 	con := db.CreateCon()
 	ctx := context.Background()
 	flag := false
