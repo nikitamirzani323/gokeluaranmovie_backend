@@ -6,14 +6,8 @@
     export let modal_footer_css = ""
     export let modal_footer = false
 </script>
-<!-- Modal -->
-<div
-	class="modal top"
-	id="{modal_id}"
-	tabindex="-1"
-	data-mdb-backdrop="false" data-mdb-keyboard="true" 
-	aria-labelledby="exampleModalLabel"
-	aria-hidden="true">
+
+<div class="modal fade" id={modal_id} tabindex="-1" data-bs-backdrop="false">
 	<div class="modal-dialog {modal_size}">
 		<div class="modal-content" style="border-radius: 0px;">
 			<div class="modal-header">
@@ -21,7 +15,7 @@
 				<button
 					type="button"
 					class="btn-close"
-					data-mdb-dismiss="modal"
+					data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body" style="{modal_body_css}">

@@ -44,7 +44,7 @@ func Adminhome(c *fiber.Ctx) error {
 		arraobj = append(arraobj, obj)
 	})
 	jsonparser.ArrayEach(listruleadmin_RD, func(value []byte, dataType jsonparser.ValueType, offset int, err error) {
-		adminrule_name, _ := jsonparser.GetString(value, "adminrule_name")
+		adminrule_name, _ := jsonparser.GetString(value, "adminrule_idruleadmin")
 
 		obj_listruleadmin.Adminrule_idrule = adminrule_name
 		arraobj_listruleadmin = append(arraobj_listruleadmin, obj_listruleadmin)

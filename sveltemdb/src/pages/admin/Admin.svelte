@@ -2,13 +2,16 @@
     import Home from "../admin/Home.svelte";
     import Entry from "../admin/Entry.svelte";
     let listAdmin = [];
-    let admin_listrule = [];
+    let listAdminrule = [];
     let record = "";
     let totalrecord = 0;
     let sData = "";
     let admin_username = "";
+    export let table_header_font = "";
+	export let table_body_font = "";
     let token = localStorage.getItem("token");
     let akses_page = true;
+    
     async function initapp() {
         const res = await fetch("/api/valid", {
             method: "POST",
@@ -74,12 +77,10 @@
             }
             if (recordlistrule != null) {
                 for (let i = 0; i < recordlistrule.length; i++) {
-                    admin_listrule = [
-                        ...admin_listrule,
+                    listAdminrule = [
+                        ...listAdminrule,
                         {
-                            adminrule_idruleadmin:
-                                recordlistrule[i]["adminrule_idruleadmin"],
-                            adminrule_name: recordlistrule[i]["adminrule_name"],
+                            adminrule_idruleadmin:recordlistrule[i]["adminrule_idruleadmin"],
                         },
                     ];
                 }
@@ -104,6 +105,9 @@
 <Home
     on:handleRefreshData={handleRefreshData}
     {token}
+    {table_header_font}
+    {table_body_font}
     {listAdmin}
+    {listAdminrule}
     {totalrecord}
 />

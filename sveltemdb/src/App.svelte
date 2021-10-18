@@ -6,6 +6,8 @@
 	import Admin from "./pages/admin/Admin.svelte";
 	import Login from "./pages/Login.svelte";
 	import NotFound from "./pages/Notfound.svelte";
+	export let table_header_font
+	export let table_body_font
 	let token = localStorage.getItem("token");
 	let routes = "";
 	let isNav = false;
@@ -24,6 +26,10 @@
 			}),
 			"/admin": wrap({
 				component: Admin,
+				props:{
+					table_header_font:table_header_font,
+					table_body_font:table_body_font
+				}
 			}),
 			"*": NotFound,
 		};
