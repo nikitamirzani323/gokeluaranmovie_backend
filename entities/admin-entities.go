@@ -14,6 +14,15 @@ type Model_adminrule struct {
 	Idrule string `json:"adminrule_idruleadmin"`
 }
 
+type Controller_admin struct {
+	Sdata    string `json:"sdata"`
+	Username string `json:"admin_username"`
+	Password string `json:"admin_password"`
+	Nama     string `json:"admin_nama"`
+	Rule     string `json:"admin_rule"`
+	Status   string `json:"admin_status"`
+}
+
 type Responseredis_adminhome struct {
 	Admin_username     string `json:"admin_username"`
 	Admin_nama         string `json:"admin_nama"`
