@@ -13,14 +13,25 @@ type Model_admin struct {
 type Model_adminrule struct {
 	Idrule string `json:"adminrule_idruleadmin"`
 }
-
-type Controller_admin struct {
-	Sdata    string `json:"sdata"`
+type Model_adminsave struct {
 	Username string `json:"admin_username"`
-	Password string `json:"admin_password"`
 	Nama     string `json:"admin_nama"`
 	Rule     string `json:"admin_rule"`
 	Status   string `json:"admin_status"`
+	Create   string `json:"admin_create"`
+	Update   string `json:"admin_update"`
+}
+type Controller_admindetail struct {
+	Username string `json:"admin_username" validate:"required"`
+}
+type Controller_adminsave struct {
+	Sdata    string `json:"sdata" validate:"required"`
+	Page     string `json:"page" validate:"required"`
+	Username string `json:"admin_username" validate:"required"`
+	Password string `json:"admin_password"`
+	Nama     string `json:"admin_nama" validate:"required"`
+	Rule     string `json:"admin_rule" validate:"required"`
+	Status   string `json:"admin_status" validate:"required"`
 }
 
 type Responseredis_adminhome struct {

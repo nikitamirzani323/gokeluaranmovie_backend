@@ -3,9 +3,9 @@
     import Entry from "../admin/Entry.svelte";
     let listAdmin = [];
     let listAdminrule = [];
+    let sData = "";
     let record = "";
     let totalrecord = 0;
-    let sData = "";
     let admin_username = "";
     export let table_header_font = "";
 	export let table_body_font = "";
@@ -25,7 +25,7 @@
         });
         const json = await res.json();
         if (json.status === 400) {
-            // logout();
+            logout();
         } else if (json.status == 403) {
             alert(json.message);
             akses_page = false;
@@ -93,8 +93,15 @@
         localStorage.clear();
         window.location.href = "/";
     }
+    const handleEditData = (e) => {
+        admin_username = e.detail.e;
+        sData = "Edit";
+        alert(admin_username)
+        // editAdmin(admin_username);
+    };
     const handleRefreshData = (e) => {
         listAdmin = [];
+        listAdminrule = [];
         totalrecord = 0;
         setTimeout(function () {
             initAdmin();
@@ -103,6 +110,7 @@
     initapp()
 </script>
 <Home
+    on:handleEditData={handleEditData}
     on:handleRefreshData={handleRefreshData}
     {token}
     {table_header_font}

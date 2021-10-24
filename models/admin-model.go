@@ -2,6 +2,7 @@ package models
 
 import (
 	"context"
+	"database/sql"
 	"log"
 	"time"
 
@@ -50,6 +51,9 @@ func Fetch_adminHome() (helpers.ResponseAdmin, error) {
 		if statuslogin_db == "Y" {
 			statuslogin_db = "ACTIVE"
 		}
+		if lastlogin_db == "0000-00-00 00:00:00" {
+			lastlogin_db = ""
+		}
 		obj.Username = username_db
 		obj.Nama = name_db
 		obj.Rule = idadminlevel_db
@@ -94,6 +98,76 @@ func Fetch_adminHome() (helpers.ResponseAdmin, error) {
 
 	return res, nil
 }
+func Fetch_adminDetail(username string) (helpers.ResponseAdmin, error) {
+	var obj entities.Model_adminsave
+	var arraobj []entities.Model_adminsave
+	var res helpers.ResponseAdmin
+	msg := "Error"
+	con := db.CreateCon()
+	ctx := context.Background()
+	start := time.Now()
+	flag := true
+
+	sql_detail := `SELECT 
+		idadmin, name, statuslogin  
+		createadmin, createdateadmin, updateadmin, updatedateadmin  
+		FROM ` + configs.DB_tbl_admin + `
+		WHERE username = ? 
+	`
+	var (
+		idadmin_db, name_db, statuslogin_db                                    string
+		createadmin_db, createdateadmin_db, updateadmin_db, updatedateadmin_db string
+	)
+	rows := con.QueryRowContext(ctx, sql_detail, username)
+
+	switch err := rows.Scan(
+		&idadmin_db, &name_db, &statuslogin_db,
+		&createadmin_db, &createdateadmin_db, &updateadmin_db, &updatedateadmin_db); err {
+	case sql.ErrNoRows:
+		flag = false
+	case nil:
+		if createdateadmin_db == "0000-00-00 00:00:00" {
+			createdateadmin_db = ""
+		}
+		if updatedateadmin_db == "0000-00-00 00:00:00" {
+			updatedateadmin_db = ""
+		}
+		create := ""
+		update := ""
+		if createdateadmin_db != "" {
+			create = createadmin_db + ", " + createdateadmin_db
+		}
+		if updateadmin_db != "" {
+			create = updateadmin_db + ", " + updatedateadmin_db
+		}
+
+		obj.Username = username
+		obj.Nama = name_db
+		obj.Rule = idadmin_db
+		obj.Status = statuslogin_db
+		obj.Create = create
+		obj.Update = update
+		arraobj = append(arraobj, obj)
+		msg = "Success"
+	default:
+		flag = false
+		helpers.ErrorCheck(err)
+	}
+
+	if flag {
+		res.Status = fiber.StatusOK
+		res.Message = msg
+		res.Record = arraobj
+		res.Time = time.Since(start).String()
+	} else {
+		res.Status = fiber.StatusBadRequest
+		res.Message = msg
+		res.Record = nil
+		res.Time = time.Since(start).String()
+	}
+
+	return res, nil
+}
 func Save_adminHome(admin, username, password, nama, rule, status, sData string) (helpers.Response, error) {
 	var res helpers.Response
 	msg := "Failed"
@@ -122,17 +196,16 @@ func Save_adminHome(admin, username, password, nama, rule, status, sData string)
 			hashpass := helpers.HashPasswordMD5(password)
 			res_newpasaran, e_newpasaran := stmt_insert.ExecContext(
 				ctx,
-				username,
-				hashpass,
-				nama,
-				"Y",
-				rule,
+				username, hashpass,
+				rule, nama, "Y",
+				tglnow.Format("YYYY-MM-DD HH:mm:ss"),
 				admin,
 				tglnow.Format("YYYY-MM-DD HH:mm:ss"))
 			helpers.ErrorCheck(e_newpasaran)
 			insert, e := res_newpasaran.RowsAffected()
 			helpers.ErrorCheck(e)
 			if insert > 0 {
+				flag = true
 				msg = "Succes"
 				log.Println("Data Berhasil di save")
 			}
