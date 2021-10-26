@@ -1,6 +1,7 @@
 <script>
     import Panel from "../../components/Panel.svelte";
     import Loader from "../../components/Loader.svelte";
+	import Button from "../../components/Button.svelte";
 	import Modal from "../../components/Modal.svelte";
     import { createEventDispatcher } from "svelte";
     import { createForm } from "svelte-forms-lib";
@@ -18,6 +19,8 @@
     let myModal_newentry = ""
     let css_loader = "display: none;";
     let msgloader = "";
+
+    
     const schema = yup.object().shape({
         username: yup.string().required("The Username is required").
                     matches(/^[a-zA-z0-9]+$/, "Username must Character A-Z or a-z or 1-9 ").
@@ -49,6 +52,7 @@
         sData = "New"
         myModal_newentry = new bootstrap.Modal(document.getElementById("modalentry"));
         myModal_newentry.show();
+        
     };
     const RefreshHalaman = () => {
         dispatch("handleRefreshData", "call");
@@ -103,6 +107,20 @@
             $form.password = ""
             $form.rule = ""
             $form.name = ""
+            
+            
+        }
+    }
+    
+    function callFunction(event){
+        switch(event.detail){
+            case "NEW":
+                NewData();
+                break;
+            case "REFRESH":
+                RefreshHalaman();break;
+            case "SAVE":
+                handleSubmit();break;
         }
     }
 </script>
@@ -112,22 +130,16 @@
 <div class="container" style="margin-top: 70px;">
     <div class="row">
         <div class="col-sm-12">
-            <button
-                on:click={() => {
-                    NewData();
-                }}
-                type="button"
-                class="btn btn-dark btn-sm">
-                NEW
-            </button>
-            <button
-                on:click={() => {
-                    RefreshHalaman();
-                }}
-                type="button"
-                class="btn btn-primary btn-sm">
-                Refresh
-            </button>
+            <Button
+                on:click={callFunction}
+                button_function="NEW"
+                button_title="New"
+                button_css="btn-dark"/>
+            <Button
+                on:click={callFunction}
+                button_function="REFRESH"
+                button_title="Refresh"
+                button_css="btn-primary"/>
             <Panel
                 card_title="{title_page}"
                 card_footer={totalrecord}>
@@ -184,6 +196,8 @@
                         </table>
                 </slot:template>
             </Panel>
+
+            
         </div>
     </div>
 </div>
@@ -242,10 +256,10 @@
         </div>
 	</slot:template>
 	<slot:template slot="footer">
-		<button
-            on:click={() => {
-                handleSubmit();
-            }} 
-            type="button" class="btn btn-dark btn-sm">Save</button>
+        <Button
+            on:click={callFunction}
+            button_function="SAVE"
+            button_title="Save"
+            button_css="btn-warning"/>
 	</slot:template>
 </Modal>
